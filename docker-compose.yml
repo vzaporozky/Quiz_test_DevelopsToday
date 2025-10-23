@@ -1,0 +1,38 @@
+# version: "3.8"
+
+services:
+  backend:
+    container_name: quiz-builder-backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres-db
+    networks:
+      - quiz-builder-network
+
+  postgres-db:
+    container_name: quiz-builder-postgres-db
+    image: postgres:15-alpine
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5432:5432"
+    networks:
+      - quiz-builder-network
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  quiz-builder-network:
+    driver: bridge
