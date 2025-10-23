@@ -11,7 +11,18 @@ const PORT = process.env.PORT || 3000;
 export const prisma = new PrismaClient();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'https://quiz-test-develops-today-frontend.vercel.app/',
+      process.env.FRONTEND_URL || 'http://localhost:3000',
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 app.use(morgan('combined'));
 app.use(express.json());
 
