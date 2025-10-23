@@ -21,31 +21,31 @@ export default function QuizzesPage() {
       setQuizzes(data);
     } catch (error) {
       console.error('Error fetching quizzes:', error);
-      alert('Ошибка при загрузке квизов');
+      alert('Error loading quizzes');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить этот квиз?')) {
+    if (!confirm('Are you sure you want to delete this quiz?')) {
       return;
     }
 
     setDeletingId(id);
     try {
       await quizApi.deleteQuiz(id);
-      setQuizzes(quizzes.filter(quiz => quiz.id !== id));
+      setQuizzes(quizzes.filter((quiz) => quiz.id !== id));
     } catch (error) {
       console.error('Error deleting quiz:', error);
-      alert('Ошибка при удалении квиза');
+      alert('Error deleting quiz');
     } finally {
       setDeletingId(null);
     }
   };
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('ru-RU', {
+    return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -56,62 +56,65 @@ export default function QuizzesPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Загрузка квизов...</p>
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-primary-600"></div>
+          <p className="text-gray-600">Loading quizzes...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Все квизы</h1>
+    <div className="mx-auto max-w-6xl px-4 py-6">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-gray-900">All Quizzes</h1>
         <Link href="/create" className="btn btn-primary">
-          Создать новый квиз
+          Create New Quiz
         </Link>
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="text-center py-12">
-          <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Квизы не найдены
+        <div className="py-12 text-center">
+          <FileText className="mx-auto mb-4 h-16 w-16 text-gray-400" />
+          <h3 className="mb-2 text-xl font-semibold text-gray-900">
+            No Quizzes Found
           </h3>
-          <p className="text-gray-600 mb-6">
-            Создайте свой первый квиз, чтобы начать работу
+          <p className="mb-6 text-gray-600">
+            Create your first quiz to get started
           </p>
           <Link href="/create" className="btn btn-primary">
-            Создать квиз
+            Create Quiz
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {quizzes.map((quiz) => (
-            <div key={quiz.id} className="card p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-xl font-semibold text-gray-900 line-clamp-2">
+            <div
+              key={quiz.id}
+              className="card p-6 transition-shadow hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-start justify-between">
+                <h3 className="line-clamp-2 text-xl font-semibold text-gray-900">
                   {quiz.title}
                 </h3>
                 <button
                   onClick={() => handleDelete(quiz.id)}
                   disabled={deletingId === quiz.id}
                   className="text-red-600 hover:text-red-800 disabled:opacity-50"
-                  title="Удалить квиз"
+                  title="Delete quiz"
                 >
-                  <Trash2 className="w-5 h-5" />
+                  <Trash2 className="h-5 w-5" />
                 </button>
               </div>
 
-              <div className="space-y-3 mb-4">
+              <div className="mb-4 space-y-3">
                 <div className="flex items-center text-gray-600">
-                  <FileText className="w-4 h-4 mr-2" />
-                  <span>{quiz.questionCount} вопросов</span>
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>{quiz.questionCount} questions</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <Calendar className="w-4 h-4 mr-2" />
+                  <Calendar className="mr-2 h-4 w-4" />
                   <span className="text-sm">{formatDate(quiz.createdAt)}</span>
                 </div>
               </div>
@@ -119,10 +122,10 @@ export default function QuizzesPage() {
               <div className="flex space-x-2">
                 <Link
                   href={`/quizzes/${quiz.id}`}
-                  className="btn btn-primary flex-1 flex items-center justify-center gap-2"
+                  className="btn btn-primary flex flex-1 items-center justify-center gap-2"
                 >
-                  <Eye className="w-4 h-4" />
-                  Просмотреть
+                  <Eye className="h-4 w-4" />
+                  View
                 </Link>
               </div>
             </div>
