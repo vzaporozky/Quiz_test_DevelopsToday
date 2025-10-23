@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://quiz-test-develops-today-frontend.vercel.app/',
+      'https://quiz-test-develops-today-frontend.vercel.app',
       process.env.FRONTEND_URL || 'http://localhost:3000',
     ],
     credentials: true,
