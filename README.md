@@ -218,6 +218,7 @@ cd frontend && npm run format
 ### Database
 
 ```bash
+# For fixing DB if does not work
 docker compose exec backend npx prisma migrate dev --name init
 
 # Generate Prisma client
