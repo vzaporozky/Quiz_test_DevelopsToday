@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import quizRoutes from './routes/quizRoutes';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 export const prisma = new PrismaClient();
 
@@ -22,7 +22,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 process.on('SIGINT', async () => {
